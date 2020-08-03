@@ -1,0 +1,42 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.3.72'
+    id 'application'
+}
+
+group 'com.albertlowis.itemsservice'
+version = "1.0.0"
+
+repositories {
+    mavenCentral()
+    maven { url 'https://packages.confluent.io/maven/' }
+}
+
+application {
+    mainClassName = 'com.albertlowis.itemsservice.AppServiceKt'
+}
+
+dependencies {
+    implementation project(":items-service-api")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.6'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6'
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.6"
+
+    implementation "org.apache.kafka:kafka-clients:2.5.0"
+    implementation "io.confluent:kafka-avro-serializer:5.5.0"
+    implementation "com.sksamuel.avro4k:avro4k-core:0.30.0"
+
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
