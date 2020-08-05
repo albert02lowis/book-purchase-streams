@@ -65,5 +65,5 @@ class PurchaseProducer (
     }
 
     private fun sendToTopic(message: Purchase) =
-        producer.send(ProducerRecord(PurchaseCreatedEvent.TOPIC_NAME, message.toString()))
+        producer.send(ProducerRecord(PurchaseCreatedEvent.TOPIC_NAME, message.purchaseId, message.toString()))
 }
