@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.3.72'
+    id 'application'
 }
 
 group 'com.albertlowis.purchaseservice'
@@ -9,6 +10,10 @@ version = "1.0.0"
 repositories {
     mavenCentral()
     maven { url 'https://packages.confluent.io/maven/' }
+}
+
+application {
+    mainClassName = 'com.albertlowis.purchaseservice.AppServiceKt'
 }
 
 dependencies {
