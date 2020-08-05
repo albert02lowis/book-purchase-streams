@@ -1,4 +1,4 @@
-package com.albertlowis.itemsservice.items
+package com.albertlowis.itemsevent
 
 import kotlinx.serialization.Serializable
 

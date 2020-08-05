@@ -1,5 +1,6 @@
 package com.albertlowis.itemsservice.items
 
+import com.albertlowis.itemsevent.Item
 import com.sksamuel.avro4k.Avro
 import org.apache.avro.generic.GenericRecordBuilder
 import org.apache.kafka.clients.producer.KafkaProducer
