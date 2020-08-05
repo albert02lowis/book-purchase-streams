@@ -24,6 +24,8 @@ So let's see what we can do with Kafka to make this more fault tolerant.
 
 This project is broken down into several sub-modules/services.
 
+![alt text](https://github.com/albert02lowis/book-purchase-streams/blob/master/design.png?raw=true)
+
 ### Items Service
 
 ##### Data model:
