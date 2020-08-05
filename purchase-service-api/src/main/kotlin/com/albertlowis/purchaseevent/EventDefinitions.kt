@@ -23,3 +23,10 @@ class PurchaseFinishedEvent {
         val VAL_SERDE = PurchaseResultSerde() //purchaseResult class
     }
 }
+
+class BookedItemStore {
+
+    companion object {
+        const val STORE_NAME = "bps-booked-items-store"
+    }
+}

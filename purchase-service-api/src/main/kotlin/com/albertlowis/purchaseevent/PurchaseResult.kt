@@ -8,7 +8,13 @@ import org.apache.kafka.common.serialization.Serializer
 
 data class PurchaseResult(
     val result: String
-)
+) {
+    companion object {
+
+        fun Success() = PurchaseResult("SUCCESS")
+        fun Failed() = PurchaseResult("FAILED")
+    }
+}
 
 class PurchaseResultSerde : Serde<PurchaseResult> {
     private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
