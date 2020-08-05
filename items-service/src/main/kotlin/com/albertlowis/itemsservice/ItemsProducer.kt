@@ -1,5 +1,6 @@
 package com.albertlowis.itemsservice
 
+import com.albertlowis.itemsevent.ITEMS_BOOTSTRAP_SERVER
 import com.albertlowis.itemsevent.Item
 import com.sksamuel.avro4k.Avro
 import org.apache.avro.generic.GenericRecordBuilder
@@ -17,7 +18,7 @@ class ItemsProducer(
 
     init {
         val props = Properties()
-        props["bootstrap.servers"] = "localhost:9092"
+        props["bootstrap.servers"] = ITEMS_BOOTSTRAP_SERVER
         props["key.serializer"] = StringSerializer::class.java
         props["value.serializer"] = StringSerializer::class.java
         schemaRegistryUrl?.let { props["schema.registry.url"] = it }

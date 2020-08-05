@@ -3,6 +3,8 @@ package com.albertlowis.itemsevent
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.kafka.common.serialization.StringSerializer
 
+const val ITEMS_BOOTSTRAP_SERVER = "localhost:9092"
+
 class ItemsAddedEvent {
 
     companion object {

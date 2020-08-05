@@ -1,5 +1,6 @@
 package com.albertlowis.purchaseservice
 
+import com.albertlowis.purchaseevent.PURCHASE_BOOTSTRAP_SERVER
 import com.albertlowis.purchaseevent.Purchase
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
@@ -15,7 +16,7 @@ class PurchaseProducer (
 
     init {
         val props = Properties()
-        props["bootstrap.servers"] = "localhost:9092"
+        props["bootstrap.servers"] = PURCHASE_BOOTSTRAP_SERVER
         props["key.serializer"] = StringSerializer::class.java
         props["value.serializer"] = StringSerializer::class.java
         schemaRegistryUrl?.let { props["schema.registry.url"] = it }
