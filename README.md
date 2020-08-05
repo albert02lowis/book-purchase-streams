@@ -1,19 +1,19 @@
 Book-Purchase-Streams
 ---
 
-This is my exploration on creating services by using [Kafka Streams](https://kafka.apache.org/documentation/streams/) as much as possible.
-After some thinking I wanted to build something simple, yet can be applied to many scenarios. In the end I came out with a flow which I call as "book-purchase".
+This is my exploration on creating services by using [Kafka Streams](https://kafka.apache.org/documentation/streams/).
+I wanted to build something simple, yet can be applied to many scenarios, so I came out with this "book-purchase" flow.
 
 
 ## Book-Purchase
 
-Book-Purchase is a flow that is very common in a lot of use cases.
+Book-Purchase is a common flow in a lot of use cases.
 The most straightforward case is for online shopping; when we have a limited quantity of items that users can purchase.
 
 Users can select an item to be purchased (booking), and proceed to make the payment (purchase).
-After the purchase is finished the item's quantity is decreased.
+After the purchase is finished the item's quantity is decreased. The seller can also restock the item quantity to make it available again.
 
-Multiple users can book an item at the same time, making this an interesting problem where concurrent purchases should not be valid if an item is out of stock.
+Multiple users can book an item at the same time, making this an interesting problem if the item is running out of stock, but there are multiple concurrent purchases vying for the same item - we need to make sure no user over-purchases the item.
 
 If we think about it, this flow is applicable to many other use cases such as booking a seat in the theatre, booking a meeting room, etc.
 
@@ -42,7 +42,7 @@ data class Item(
 
 ##### Basic design:
 
-We will try to insert item into a topic
+We will append items into a topic; this represents the event when items are restocked/added.
 
 ### Purchase Service
 
@@ -66,10 +66,10 @@ data class PurchaseResult(
 
 ##### Basic design:
 
-When user makes a purchase, we will append Purchase object to a topic.
-An application built on Kafka streams will validate this purchase topic against the items topic by joining and using state store.
+When user makes a purchase, we will append Purchase object to a topic, this topic represents a purchase created event.
+An application built on Kafka streams will validate this purchase topic against the items topic by joining and using state store, the state store will keep track how many items have been booked by previous purchases.
 
-If the purchase is successful, we will append the result to another topic.
+The purchase result (success/fail) will be appended another topic, this represents purchase finished event.
 
 ### How to setup and run
 
