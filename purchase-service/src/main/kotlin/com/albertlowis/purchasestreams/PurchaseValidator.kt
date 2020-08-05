@@ -10,14 +10,14 @@ import org.apache.kafka.streams.kstream.TransformerSupplier
 import org.apache.kafka.streams.processor.ProcessorContext
 import org.apache.kafka.streams.state.KeyValueStore
 
-class PurchaseValidatorTransformerSupplier : TransformerSupplier<String, KeyValue<Purchase, Item>, KeyValue<String, PurchaseResult>> {
+class BookPurchaseTransformerSupplier : TransformerSupplier<String, KeyValue<Purchase, Item>, KeyValue<String, PurchaseResult>> {
 
     override fun get(): Transformer<String, KeyValue<Purchase, Item>, KeyValue<String, PurchaseResult>> {
-        return PurchaseValidatorTransformer()
+        return BookPurchaseTransformer()
     }
 }
 
-class PurchaseValidatorTransformer : Transformer<String, KeyValue<Purchase, Item>, KeyValue<String, PurchaseResult>> {
+class BookPurchaseTransformer : Transformer<String, KeyValue<Purchase, Item>, KeyValue<String, PurchaseResult>> {
 
     private var bookedItemStore: KeyValueStore<String, Int>? = null
 

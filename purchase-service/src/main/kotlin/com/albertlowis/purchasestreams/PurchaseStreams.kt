@@ -76,7 +76,7 @@ class PurchaseStreams {
                     ItemSerde()
                 )
             )
-            .transform(PurchaseValidatorTransformerSupplier(), BookedItemStore.STORE_NAME)
+            .transform(BookPurchaseTransformerSupplier(), BookedItemStore.STORE_NAME)
             .to(
                 PurchaseFinishedEvent.TOPIC_NAME,
                 Produced.with(
