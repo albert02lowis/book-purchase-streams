@@ -1,4 +1,4 @@
-package com.albertlowis.purchaseservice.purchase
+package com.albertlowis.purchaseservice
 
 import com.albertlowis.purchaseevent.Purchase
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -25,6 +25,7 @@ class PurchaseProducer (
 
     fun produce() {
         val purchase1 = Purchase(
+            purchaseId = "1",
             itemId = "1",
             quantity = 1,
             purchasedBy = "userId1"
@@ -34,6 +35,7 @@ class PurchaseProducer (
         result1.get()
 
         val purchase21 = Purchase(
+            purchaseId = "21",
             itemId = "2",
             quantity = 1,
             purchasedBy = "userId21"
@@ -41,6 +43,7 @@ class PurchaseProducer (
         val result21 = sendToTopic(purchase21)
 
         val purchase22 = Purchase(
+            purchaseId = "22",
             itemId = "2",
             quantity = 2,
             purchasedBy = "userId22"
@@ -51,6 +54,7 @@ class PurchaseProducer (
         result22.get()
 
         val purchase3 = Purchase(
+            purchaseId = "3",
             itemId = "3",
             quantity = 1,
             purchasedBy = "userId3"

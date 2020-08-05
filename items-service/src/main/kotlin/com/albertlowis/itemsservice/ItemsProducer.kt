@@ -1,4 +1,4 @@
-package com.albertlowis.itemsservice.items
+package com.albertlowis.itemsservice
 
 import com.albertlowis.itemsevent.Item
 import com.sksamuel.avro4k.Avro
