@@ -8,7 +8,7 @@ class ItemsAddedEvent {
 
     companion object {
         const val TOPIC_NAME = "bps-items-added"
-        val KEY_SERDE = Serdes.StringSerde()
-        val VAL_SERDE = Serdes.StringSerde()
+        val KEY_SERDE = Serdes.StringSerde() //itemId
+        val VAL_SERDE = ItemSerde() //item class
     }
 }

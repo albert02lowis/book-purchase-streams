@@ -17,6 +17,7 @@ application {
 }
 
 dependencies {
+    implementation project(":items-service-api")
     implementation project(":purchase-service-api")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

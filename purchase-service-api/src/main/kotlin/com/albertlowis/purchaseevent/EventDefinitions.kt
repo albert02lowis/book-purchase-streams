@@ -10,8 +10,8 @@ class PurchaseCreatedEvent {
 
     companion object {
         const val TOPIC_NAME = "bps-purchase-created"
-        val KEY_SERDE = Serdes.StringSerde()
-        val VAL_SERDE = Serdes.StringSerde()
+        val KEY_SERDE = Serdes.StringSerde() //purchaseId
+        val VAL_SERDE = PurchaseSerde() //purchase class
     }
 }
 
@@ -19,7 +19,7 @@ class PurchaseFinishedEvent {
 
     companion object {
         const val TOPIC_NAME = "bps-purchase-finished"
-        val KEY_SERDE = Serdes.StringSerde()
-        val VAL_SERDE = Serdes.StringSerde()
+        val KEY_SERDE = Serdes.StringSerde() //purchaseId
+        val VAL_SERDE = Serdes.StringSerde() //result
     }
 }
