@@ -15,20 +15,19 @@ data class Item(
 )
 
 class ItemSerde : Serde<Item> {
-    private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
 
     override fun deserializer(): Deserializer<Item> {
-        return ItemDeserializer(jsonMapper)
+        return ItemDeserializer()
     }
 
     override fun serializer(): Serializer<Item> {
-        return ItemSerializer(jsonMapper)
+        return ItemSerializer()
     }
 }
 
-class ItemSerializer(
-    private val jsonMapper: ObjectMapper
-) : Serializer<Item> {
+class ItemSerializer : Serializer<Item> {
+
+    private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
 
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {
     }
@@ -42,9 +41,9 @@ class ItemSerializer(
     }
 }
 
-class ItemDeserializer(
-    private val jsonMapper: ObjectMapper
-) : Deserializer<Item> {
+class ItemDeserializer : Deserializer<Item> {
+
+    private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
 
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {
     }

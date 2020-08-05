@@ -16,20 +16,19 @@ data class Purchase(
 )
 
 class PurchaseSerde : Serde<Purchase> {
-    private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
 
     override fun deserializer(): Deserializer<Purchase> {
-        return PurchaseDeserializer(jsonMapper)
+        return PurchaseDeserializer()
     }
 
     override fun serializer(): Serializer<Purchase> {
-        return PurchaseSerializer(jsonMapper)
+        return PurchaseSerializer()
     }
 }
 
-class PurchaseSerializer(
-    private val jsonMapper: ObjectMapper
-) : Serializer<Purchase> {
+class PurchaseSerializer : Serializer<Purchase> {
+
+    private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
 
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {
     }
@@ -43,9 +42,9 @@ class PurchaseSerializer(
     }
 }
 
-class PurchaseDeserializer(
-    private val jsonMapper: ObjectMapper
-) : Deserializer<Purchase> {
+class PurchaseDeserializer : Deserializer<Purchase> {
+
+    private val jsonMapper = ObjectMapper().apply { registerKotlinModule() }
 
     override fun configure(configs: MutableMap<String, *>?, isKey: Boolean) {
     }

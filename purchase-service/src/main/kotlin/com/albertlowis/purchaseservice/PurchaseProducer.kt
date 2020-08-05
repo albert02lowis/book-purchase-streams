@@ -11,7 +11,7 @@ import java.util.*
 class PurchaseProducer (
     schemaRegistryUrl: String? = null
 ) {
-    private val producer: Producer<String, String>
+    private val producer: Producer<String, Purchase>
 
     init {
         val props = Properties()
@@ -20,7 +20,7 @@ class PurchaseProducer (
         props["value.serializer"] = PurchaseCreatedEvent.VAL_SERDE.serializer()::class.java
         schemaRegistryUrl?.let { props["schema.registry.url"] = it }
 
-        producer = KafkaProducer<String, String>(props)
+        producer = KafkaProducer<String, Purchase>(props)
     }
 
     fun produce() {
@@ -65,5 +65,5 @@ class PurchaseProducer (
     }
 
     private fun sendToTopic(message: Purchase) =
-        producer.send(ProducerRecord(PurchaseCreatedEvent.TOPIC_NAME, message.purchaseId, message.toString()))
+        producer.send(ProducerRecord(PurchaseCreatedEvent.TOPIC_NAME, message.purchaseId, message))
 }

@@ -13,7 +13,7 @@ import java.util.*
 class ItemsProducer(
     schemaRegistryUrl: String? = null
 ) {
-    private val producer: Producer<String, String>
+    private val producer: Producer<String, Item>
 
     init {
         val props = Properties()
@@ -22,7 +22,7 @@ class ItemsProducer(
         props["value.serializer"] = ItemsAddedEvent.VAL_SERDE.serializer()::class.java
         schemaRegistryUrl?.let { props["schema.registry.url"] = it }
 
-        producer = KafkaProducer<String, String>(props)
+        producer = KafkaProducer<String, Item>(props)
     }
 
     fun produce() {
@@ -55,7 +55,7 @@ class ItemsProducer(
     }
 
     private fun sendToTopic(item: Item) =
-        producer.send(ProducerRecord(ItemsAddedEvent.TOPIC_NAME, item.itemId, item.toString()))
+        producer.send(ProducerRecord(ItemsAddedEvent.TOPIC_NAME, item.itemId, item))
 
     private fun Item.toGenericRecord() = GenericRecordBuilder(
         Avro.default.schema(Item.serializer())
