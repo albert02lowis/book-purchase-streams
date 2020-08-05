@@ -1,2 +1,2 @@
 rootProject.name = 'book-purchase-streams'
-include 'items-service', 'items-service-api'
+include 'items-service', 'items-service-api', 'purchase-service', 'purchase-service-api'
