@@ -41,6 +41,7 @@ class PurchaseValidatorTransformer : Transformer<String, KeyValue<Purchase, Item
         val totalItemsNeeded = previouslyBookedItemQuantity + purchase.quantity
 
         return if (item.quantity >= totalItemsNeeded) {
+            bookedItemStore!!.put(itemId, totalItemsNeeded) //record items booked so far
             KeyValue(
                 purchase.purchaseId,
                 PurchaseResult.Success(
