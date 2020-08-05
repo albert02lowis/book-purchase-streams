@@ -18,15 +18,13 @@ Multiple users can book an item at the same time, making this an interesting pro
 If we think about it, this flow is applicable to many other use cases such as booking a seat in the theatre, booking a meeting room, etc.
 
 The essence of this problem is multiple transactions trying to claim the same resource. The traditional approach is done via locking, but locking a specific resource has a disadvantage that other transactions get blocked, and blocked transactions means thread/processes are just waiting doing nothing, and if the blocked process crashes, the user needs to retry.
-So let's see what we can do with Kafka.
+So let's see what we can do with Kafka to make this more fault tolerant.
 
 ## High-Level Design
 
 This project is broken down into several sub-modules/services.
 
 ### Items Service
-
-Items service is the first thing that I will build:
 
 ##### Data model:
 ```
@@ -38,43 +36,74 @@ data class Item(
 ```
 ##### APIs:
 
-- Insert item
-- Update item quantity
-- Update item description
+- Insert item with quantity
 
 ##### Basic design:
 
-Since we are just interested in the latest information about items, items will be inserted into Kafka (itemId as key) with log compaction enabled and retention set to forever -> this makes Kafka acting like a materialized view of items.
-
-And then we can try to use ksqlDB to query information about items.
+We will try to insert item into a topic
 
 ### Purchase Service
 
 ##### Data model:
 ```
 data class Purchase(
+    val purchaseId: String,
     val itemId: String,
     val quantity: Int,
-    val purchasedBy: String,
-    val purchaseStatus: String
+    val purchasedBy: String
 )
 
-enum class PurchaseStatus {
-    
-    CREATED,
-    SUCCESSFUL,
-    FAILED
-}
+data class PurchaseResult(
+    val resultMessage: String
+)
 ```
 
 ##### APIs:
 
-- Make purchase
+- Make purchase with certain quantity
 
 ##### Basic design:
 
-Purchases will be recorded in kafka with log compaction disabled and retention set to forever.
-When user makes a purchase, we will append Purchase object with status as CREATED.
-If the purchase is successful, we will append again with status SUCCESSFUL, else FAILED.
+When user makes a purchase, we will append Purchase object to a topic.
+An application built on Kafka streams will validate this purchase topic against the items topic by joining and using state store.
 
-I will try to use Kafka Streams to join the purchase stream with the item materialized view to increment/decrement the item quantity. Purchase is successful if there is enough quantity left for the purchase.
+If the purchase is successful, we will append the result to another topic.
+
+### How to setup and run
+
+#### Prerequisites
+
+- Zookeeper
+- Kafka
+- Gradle
+
+#### Running
+
+Run Zookeeper and then Kafka 
+```
+bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-server-start.sh config/server.properties
+```
+Create the topics
+```
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic bps-items-added --config retention.ms=600000
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic bps-purchase-created --config retention.ms=600000
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic bps-purchase-finished --config retention.ms=600000
+```
+Run Kafka Console Consumer to see the end result
+```
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic bps-purchase-finished --from-beginning
+```
+Run the Items Service
+```
+./gradlew :items-service:run
+```
+Run the Purchase Service and after this runs we should see the result in the console consumer soon.
+```
+./gradlew :purchase-service:run
+```
+
+### TODOs:
+
+- Wire with REST endpoints instead of hardcoding the items and purchase producer.
+- Containerize this to make setup and running easier.
