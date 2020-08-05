@@ -2,23 +2,22 @@ package com.albertlowis.purchaseservice
 
 import com.albertlowis.purchaseevent.PURCHASE_BOOTSTRAP_SERVER
 import com.albertlowis.purchaseevent.Purchase
+import com.albertlowis.purchaseevent.PurchaseCreatedEvent
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.StringSerializer
 import java.util.*
 
 class PurchaseProducer (
     schemaRegistryUrl: String? = null
 ) {
     private val producer: Producer<String, String>
-    private val TOPIC_NAME = "bps-purchase"
 
     init {
         val props = Properties()
         props["bootstrap.servers"] = PURCHASE_BOOTSTRAP_SERVER
-        props["key.serializer"] = StringSerializer::class.java
-        props["value.serializer"] = StringSerializer::class.java
+        props["key.serializer"] = PurchaseCreatedEvent.KEY_SERDE.serializer()::class.java
+        props["value.serializer"] = PurchaseCreatedEvent.VAL_SERDE.serializer()::class.java
         schemaRegistryUrl?.let { props["schema.registry.url"] = it }
 
         producer = KafkaProducer<String, String>(props)
@@ -66,5 +65,5 @@ class PurchaseProducer (
     }
 
     private fun sendToTopic(message: Purchase) =
-        producer.send(ProducerRecord(TOPIC_NAME, message.toString()))
+        producer.send(ProducerRecord(PurchaseCreatedEvent.TOPIC_NAME, message.toString()))
 }

@@ -2,25 +2,24 @@ package com.albertlowis.itemsservice
 
 import com.albertlowis.itemsevent.ITEMS_BOOTSTRAP_SERVER
 import com.albertlowis.itemsevent.Item
+import com.albertlowis.itemsevent.ItemsAddedEvent
 import com.sksamuel.avro4k.Avro
 import org.apache.avro.generic.GenericRecordBuilder
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.serialization.StringSerializer
 import java.util.*
 
 class ItemsProducer(
     schemaRegistryUrl: String? = null
 ) {
     private val producer: Producer<String, String>
-    private val TOPIC_NAME = "bps-items"
 
     init {
         val props = Properties()
         props["bootstrap.servers"] = ITEMS_BOOTSTRAP_SERVER
-        props["key.serializer"] = StringSerializer::class.java
-        props["value.serializer"] = StringSerializer::class.java
+        props["key.serializer"] = ItemsAddedEvent.KEY_SERDE.serializer()::class.java
+        props["value.serializer"] = ItemsAddedEvent.VAL_SERDE.serializer()::class.java
         schemaRegistryUrl?.let { props["schema.registry.url"] = it }
 
         producer = KafkaProducer<String, String>(props)
@@ -56,7 +55,7 @@ class ItemsProducer(
     }
 
     private fun sendToTopic(item: Item) =
-        producer.send(ProducerRecord(TOPIC_NAME, item.toString()))
+        producer.send(ProducerRecord(ItemsAddedEvent.TOPIC_NAME, item.itemId, item.toString()))
 
     private fun Item.toGenericRecord() = GenericRecordBuilder(
         Avro.default.schema(Item.serializer())
