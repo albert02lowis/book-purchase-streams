@@ -20,6 +20,6 @@ class PurchaseFinishedEvent {
     companion object {
         const val TOPIC_NAME = "bps-purchase-finished"
         val KEY_SERDE = Serdes.StringSerde() //purchaseId
-        val VAL_SERDE = Serdes.StringSerde() //result
+        val VAL_SERDE = PurchaseResultSerde() //purchaseResult class
     }
 }
