@@ -7,7 +7,7 @@ import org.apache.kafka.common.serialization.Serde
 import org.apache.kafka.common.serialization.Serializer
 
 data class PurchaseResult(
-    val result: String
+    val resultMessage: String
 ) {
     companion object {
 
