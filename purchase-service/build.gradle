@@ -23,6 +23,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0"
 
     implementation "org.apache.kafka:kafka-clients:2.5.0"
+    implementation "org.apache.kafka:kafka-streams:2.6.0"
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")

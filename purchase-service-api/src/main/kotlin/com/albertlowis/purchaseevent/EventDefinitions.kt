@@ -5,7 +5,7 @@ import org.apache.kafka.common.serialization.StringSerializer
 
 const val PURCHASE_BOOTSTRAP_SERVER = "localhost:9092"
 const val PURCHASE_STREAMS_STATE_DIR = "/tmp/kafka-streams"
-const val PURCHASE_STREAMS_SERVICE_NAME = "BpsPurchaseStreams"
+const val PURCHASE_STREAMS_SERVICE_APP_ID = "BpsPurchaseStreams"
 
 class PurchaseCreatedEvent {
 
