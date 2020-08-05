@@ -108,4 +108,5 @@ Run the Purchase Service and after this runs we should see the result in the con
 ### TODOs:
 
 - Wire with REST endpoints instead of hardcoding the items and purchase producer.
+- Make blocking purchase API that waits for purchase finished topic after appending purchase created topic. 
 - Containerize this to make setup and running easier.
