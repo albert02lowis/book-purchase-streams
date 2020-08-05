@@ -19,12 +19,12 @@ class PurchaseValidatorTransformerSupplier : TransformerSupplier<String, KeyValu
 
 class PurchaseValidatorTransformer : Transformer<String, KeyValue<Purchase, Item>, KeyValue<String, PurchaseResult>> {
 
-    private var bookedItemStore: KeyValueStore<String, Long>? = null
+    private var bookedItemStore: KeyValueStore<String, Int>? = null
 
     override fun init(context: ProcessorContext) {
         bookedItemStore = context.getStateStore(
             BookedItemStore.STORE_NAME
-        ) as KeyValueStore<String, Long>
+        ) as KeyValueStore<String, Int>
     }
 
     override fun transform(
@@ -41,9 +41,29 @@ class PurchaseValidatorTransformer : Transformer<String, KeyValue<Purchase, Item
         val totalItemsNeeded = previouslyBookedItemQuantity + purchase.quantity
 
         return if (item.quantity >= totalItemsNeeded) {
-            KeyValue(purchase.purchaseId, PurchaseResult.Success())
+            KeyValue(
+                purchase.purchaseId,
+                PurchaseResult.Success(
+                    itemId = item.itemId,
+                    purchaseId = purchase.purchaseId,
+                    itemQuantity = item.quantity,
+                    alreadyBooked = previouslyBookedItemQuantity,
+                    purchaseQuantity = purchase.quantity,
+                    remainingQuantity = item.quantity - totalItemsNeeded
+                )
+            )
         } else {
-            KeyValue(purchase.purchaseId, PurchaseResult.Failed())
+            KeyValue(
+                purchase.purchaseId,
+                PurchaseResult.Failed(
+                    itemId = item.itemId,
+                    purchaseId = purchase.purchaseId,
+                    itemQuantity = item.quantity,
+                    alreadyBooked = previouslyBookedItemQuantity,
+                    purchaseQuantity = purchase.quantity,
+                    remainingQuantity = item.quantity - totalItemsNeeded
+                )
+            )
         }
     }
 

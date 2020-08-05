@@ -11,8 +11,49 @@ data class PurchaseResult(
 ) {
     companion object {
 
-        fun Success() = PurchaseResult("SUCCESS")
-        fun Failed() = PurchaseResult("FAILED")
+        fun Success(
+            itemId: String,
+            purchaseId: String,
+            itemQuantity: Int,
+            alreadyBooked: Int,
+            purchaseQuantity: Int,
+            remainingQuantity: Int
+        ) = ResultWithInfo(
+            res = "SUCCESS",
+            itemId = itemId,
+            purchaseId = purchaseId,
+            itemQuantity = itemQuantity,
+            alreadyBooked = alreadyBooked,
+            purchaseQuantity = purchaseQuantity,
+            remainingQuantity = remainingQuantity
+        )
+
+        fun Failed(
+            itemId: String,
+            purchaseId: String,
+            itemQuantity: Int,
+            alreadyBooked: Int,
+            purchaseQuantity: Int,
+            remainingQuantity: Int
+        ) = ResultWithInfo(
+            res = "FAILED",
+            itemId = itemId,
+            purchaseId = purchaseId,
+            itemQuantity = itemQuantity,
+            alreadyBooked = alreadyBooked,
+            purchaseQuantity = purchaseQuantity,
+            remainingQuantity = remainingQuantity
+        )
+
+        fun ResultWithInfo(
+            res: String,
+            itemId: String,
+            purchaseId: String,
+            itemQuantity: Int,
+            alreadyBooked: Int,
+            purchaseQuantity: Int,
+            remainingQuantity: Int
+        ) = PurchaseResult("$purchaseId - $itemId $res quantity: $itemQuantity alreadyBooked: $alreadyBooked purchaseQuantity: $purchaseQuantity remaining: $remainingQuantity")
     }
 }
 
